@@ -42,6 +42,14 @@ app.get('/photos', function(req, res){
     + '</form>');
 });
 
+app.get('/show/:name', function(req, res) {
+
+  // Setup alt redirects.
+  console.log('Getting', req.params.name);
+  
+  fs.createReadStream( __dirname + '/../tmp/' + req.params.name ).pipe(res);
+
+});
 
 app.get('/list', function(req, res) {
 
