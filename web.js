@@ -1,4 +1,5 @@
 var express    = require('express');
+var fs = require('fs');
 
 // ---------------------------------------------------
 // Define the express application.
