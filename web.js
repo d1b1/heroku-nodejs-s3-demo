@@ -20,7 +20,7 @@ app.configure(function(){
   console.log('Path 2:', __dirname + './tmp');
   console.log('Path 3:', __dirname + '../tmp');
 
-  app.use('/images/', express.static(__dirname + '/tmp'));
+  app.use('/images', express.static('/tmp'));
 
   app.use(app.router)
 
@@ -33,7 +33,7 @@ app.get('/photos', function(req, res){
   console.log('Path 1:', __dirname);
   console.log('Path 2:', __dirname + './tmp');
   console.log('Path 3:', __dirname + '../tmp');
-  
+
   res.send('<form method="post" enctype="multipart/form-data">'
     + '<p>Data: <input type="filename" name="filename" /></p>'
     + '<p>file: <input type="file" name="file" /></p>'
