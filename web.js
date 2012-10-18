@@ -53,7 +53,7 @@ app.get('/list', function(req, res) {
     console.log(files);
   });
 
-}
+});
 
 app.post('/photos', function(req, res) {
 
