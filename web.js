@@ -21,7 +21,7 @@ app.configure(function(){
   console.log('Path 2:', __dirname + './tmp');
   console.log('Path 3:', __dirname + '../tmp');
 
-  app.use('/images', express.static( __dirname + './tmp'));
+  app.use('/images', express.static( __dirname + '/../tmp'));
 
   app.use(app.router)
 
