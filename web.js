@@ -42,7 +42,7 @@ app.get('/photos', function(req, res){
 });
 
 
-app.get('/list', function(req, res)) {
+app.get('/list', function(req, res) {
 
  
   fs.readdir(process.cwd(), function (err, files) {
