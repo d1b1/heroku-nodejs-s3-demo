@@ -1,10 +1,18 @@
-var express    = require('express');
-var fs         = require('fs');
+var express    = require('express'),
+    fs         = require('fs'),
+    jade       = require('jade'),
+    path       = require('path');
 
 // ---------------------------------------------------
 // Define the express application.
 
 var app = express();
+
+var path = __dirname + '/tmp';
+
+app.configure('production', function() {
+ path = __dirname + '/../tmp';
+});
 
 app.configure(function(){
   app.set('port', process.env.PORT || 4000);
@@ -17,61 +25,51 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(express.cookieParser());
 
-  console.log('Path 1:', __dirname);
-  console.log('Path 2:', __dirname + './tmp');
-  console.log('Path 3:', __dirname + '../tmp');
+  app.use(app.router);
 
-  app.use('/images', express.static( __dirname + '/../tmp'));
-
-  app.use(app.router)
-
+  app.use('/', express.static(__dirname + '/'));
+  app.use('/images', express.static( '/tmp' ));
 });
 
 // -------------------------------------------------------------
 
-app.get('/photos', function(req, res){
+app.get('/', function(req, res){
 
-  console.log('Path 1:', __dirname);
-  console.log('Path 2:', __dirname + './tmp');
-  console.log('Path 3:', __dirname + '../tmp');
-
-  res.send('<form method="post" enctype="multipart/form-data">'
-    + '<p>Data: <input type="filename" name="filename" /></p>'
-    + '<p>file: <input type="file" name="file" /></p>'
-    + '<p><input type="submit" value="Upload" /></p>'
-    + '</form>');
-});
-
-app.get('/show/:name', function(req, res) {
-
-  // Setup alt redirects.
-  console.log('Getting', req.params.name);
-  
-  fs.createReadStream( __dirname + '/../tmp/' + req.params.name ).pipe(res);
-
-});
-
-app.get('/list', function(req, res) {
-
-  // process.cwd()
-  console.log('path:', __dirname + '/../tmp');
-  fs.readdir( __dirname + '/../tmp', function (err, files) {
+  fs.readdir( "/tmp", function (err, files) {
     if (err) {
       console.log(err);
       return;
     }
 
-    res.send(files);
     console.log(files);
+    res.render('list', { files: files });
   });
 
 });
 
-app.post('/photos', function(req, res) {
+app.get('/show/:name', function(req, res) {
+  fs.createReadStream( path + req.params.name ).pipe(res);
+});
+
+app.get('/list', function(req, res) {
+
+  fs.readdir( "/tmp", function (err, files) {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    res.render('list', { files: files });
+  });
+
+});
+
+app.post('/', function(req, res) {
 
   console.log(req.files);
 
-  res.send(req.files);
+  //res.send(req.files);
+
+  res.redirect('/'); 
 
   // req.form.complete(function(err, fields, files) {
   //   if(err) {

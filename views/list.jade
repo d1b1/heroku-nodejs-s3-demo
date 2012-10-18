@@ -1,0 +1,21 @@
+
+extends layout
+
+block content
+  table.table.table-striped
+    thead
+      tr
+        th Image
+        th Local Name
+        th S3 Name
+
+    tbody
+      - for (var i = 0; i < files.length; ++i)
+        tr
+         td
+          img(class='img-polaroid', width='50', src='/images/' + files[i])
+          &nbsp;
+         td
+          = files[i]
+         td
+          | URL

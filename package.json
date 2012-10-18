@@ -3,11 +3,13 @@
   "version": "0.0.1",
   "engines": {
     "node": "0.8.x",
-    "npm":  "1.1.x"
+    "npm": "1.1.x"
   },
   "dependencies": {
     "express": "3.0.0rc2",
-    "request": "2.9.202"
+    "request": "2.9.202",
+    "jade": "~0.27.2",
+    "path": "~0.4.9"
   },
   "scripts": {
     "start": "web.js"
