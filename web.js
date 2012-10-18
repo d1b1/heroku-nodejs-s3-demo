@@ -18,7 +18,7 @@ app.configure(function(){
 
   app.use(app.router)
 
-  app.use('/images', express.static(__dirname + '/tmp'));
+  app.use('/images', express.static(__dirname + '../tmp'));
 
 });
 
