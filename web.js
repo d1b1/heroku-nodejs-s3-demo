@@ -18,6 +18,8 @@ app.configure(function(){
 
   app.use(app.router)
 
+  console.log(__dirname + '../tmp');
+  
   app.use('/images', express.static(__dirname + '../tmp'));
 
 });
