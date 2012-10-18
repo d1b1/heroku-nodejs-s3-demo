@@ -46,11 +46,13 @@ app.get('/photos', function(req, res){
 app.get('/list', function(req, res) {
 
   // process.cwd()
-  fs.readdir('/tmp', function (err, files) {
+  fs.readdir('./tmp', function (err, files) {
     if (err) {
       console.log(err);
       return;
     }
+
+    res.send(files);
     console.log(files);
   });
 
