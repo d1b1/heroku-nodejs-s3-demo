@@ -42,6 +42,19 @@ app.get('/photos', function(req, res){
 });
 
 
+app.get('/list', function(req, res)) {
+
+ 
+  fs.readdir(process.cwd(), function (err, files) {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log(files);
+  });
+
+}
+
 app.post('/photos', function(req, res) {
 
   console.log(req.files);
