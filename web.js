@@ -46,8 +46,8 @@ app.get('/photos', function(req, res){
 app.get('/list', function(req, res) {
 
   // process.cwd()
-  console.log('path:', __dirname + './tmp');
-  fs.readdir( __dirname + '../tmp', function (err, files) {
+  console.log('path:', __dirname + '/../tmp');
+  fs.readdir( __dirname + '/../tmp', function (err, files) {
     if (err) {
       console.log(err);
       return;
