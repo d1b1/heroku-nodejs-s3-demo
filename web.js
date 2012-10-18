@@ -21,7 +21,7 @@ app.configure(function(){
 
 // -------------------------------------------------------------
 
-app.get('/photos/new', function(req, res){
+app.get('/photos', function(req, res){
   res.send('<form method="post" enctype="multipart/form-data">'
     + '<p>Data: <input type="filename" name="filename" /></p>'
     + '<p>file: <input type="file" name="file" /></p>'
@@ -30,9 +30,11 @@ app.get('/photos/new', function(req, res){
 });
 
 
-app.post('/photos/new', function(req, res) {
+app.post('/photos', function(req, res) {
 
   console.log(req.files);
+
+  res.send(req.files);
 
   // req.form.complete(function(err, fields, files) {
   //   if(err) {
