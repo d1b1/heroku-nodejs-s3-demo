@@ -1,5 +1,5 @@
 var express    = require('express');
-var fs = require('fs');
+var fs         = require('fs');
 
 // ---------------------------------------------------
 // Define the express application.
@@ -45,7 +45,6 @@ app.get('/photos', function(req, res){
 
 app.get('/list', function(req, res) {
 
- 
   fs.readdir(process.cwd(), function (err, files) {
     if (err) {
       console.log(err);
