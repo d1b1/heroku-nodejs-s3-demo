@@ -17,6 +17,9 @@ app.configure(function(){
   app.use(express.cookieParser());
 
   app.use(app.router)
+
+  app.use('/images', express.static(__dirname + '/tmp'));
+
 });
 
 // -------------------------------------------------------------
