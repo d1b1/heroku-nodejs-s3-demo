@@ -69,7 +69,7 @@ app.post('/', function(req, res) {
         } else { 
           //console.log(result);
           console.log('Failed to upload file to Amazon S3'); 
-          res.send(result);
+          console.log(result);
           return;
         }
         
