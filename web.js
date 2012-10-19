@@ -48,8 +48,8 @@ app.get('/show/:name', function(req, res) {
 });
 
 var client = knox.createClient({
-    key: process.env.AWS_ACCESS_KEY_ID.toString(),
-    secret: process.env.AWS_SECRET_ACCESS_KEY.toString(),
+    key: process.env.AWS_ACCESS_KEY_ID,
+    secret: process.env.AWS_SECRET_ACCESS_KEY,
     bucket: 'formaggio-dev'
 });
 
@@ -60,13 +60,17 @@ app.post('/', function(req, res) {
   client.putFile(file.path, file.name, {'Content-Type': file.type, 'x-amz-acl': 'private'}, 
     function(err, result) {
       if (err) {
-        res.send(err);
+        console.log(err);
+        // res.send(err);
         return; 
       } else {
         if (200 == result.statusCode) { 
           console.log('Uploaded to Amazon S3!');
         } else { 
+          //console.log(result);
           console.log('Failed to upload file to Amazon S3'); 
+          res.send(result);
+          return;
         }
         
         res.redirect('/'); 
