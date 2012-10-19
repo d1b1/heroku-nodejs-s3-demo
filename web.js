@@ -47,6 +47,27 @@ app.get('/show/:name', function(req, res) {
   fs.createReadStream( path + req.params.name ).pipe(res);
 });
 
+app.get('/delete/:name', function(req, res) {
+
+  fs.unlink('/tmp/' + req.params.name, function (err) {
+    if (err) throw err;
+    console.log('successfully deleted /tmp/'+req.params.name);
+
+    res.redirect('/'); 
+  });
+
+});
+
+app.get('/s3/delete/:name', function(req, res) {
+
+  client.del(req.params.name)
+    .on('response', function(res){
+      console.log(res.statusCode);
+      console.log(res.headers);
+      res.redirect('/'); 
+    }).end();
+
+});
 
 app.post('/', function(req, res) {
 
@@ -58,8 +79,6 @@ app.post('/', function(req, res) {
 
   var file = req.files.file;
 
-  console.log('ddd', encodeURIComponent(file.name));
-
   client.putFile(file.path, encodeURIComponent(file.name), {'Content-Type': file.type, 'x-amz-acl': 'private'}, 
     function(err, result) {
       if (err) {
@@ -67,6 +86,7 @@ app.post('/', function(req, res) {
       } else {
         if (200 == result.statusCode) { 
           console.log('Uploaded to Amazon S3!');
+          // fs.unlink(file.path);
         } else { 
           console.log('Failed to upload file to Amazon S3'); 
         }

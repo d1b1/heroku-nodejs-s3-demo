@@ -19,3 +19,5 @@ block content
           = files[i].Key
          td
           | URL
+         td 
+           button(class="btn btn-small", type="button", onclick="document.location='/delete/" + files[i].Key + "';") Remove
