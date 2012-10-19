@@ -34,7 +34,7 @@ app.configure(function(){
 
 // -------------------------------------------------------------
 
-app.get('/', function(req, res){
+app.get('/local', function(req, res){
   fs.readdir( '/tmp', function (err, files) {
     if (err) {
       return;
@@ -108,7 +108,7 @@ app.get('/s3/delete/:name', function(req, res) {
 
 });
 
-app.get('/s3', function(req, res) {
+app.get('/', function(req, res) {
 
   var knoxCopy = require('knox-copy');
 
