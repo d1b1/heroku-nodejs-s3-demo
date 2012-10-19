@@ -60,6 +60,12 @@ app.get('/delete/:name', function(req, res) {
 
 app.get('/s3/delete/:name', function(req, res) {
 
+  var client = knox.createClient({
+      key: process.env.AWS_ACCESS_KEY_ID,
+      secret: process.env.AWS_SECRET_ACCESS_KEY,
+      bucket: 'formaggio-dev'
+  });
+  
   client.del(req.params.name)
     .on('response', function(res){
       console.log(res.statusCode);
@@ -111,25 +117,6 @@ app.get('/s3', function(req, res) {
     console.log(page.Contents);
     res.render('s3list', { files: page.Contents });
   });
-
-  // client.streamKeys({ prefix: '' })
-  //   .on('data', function(key) {
-  //     console.log(key);
-  //     res.send(key);
-  //   });
-
-  // var s3 = require('aws2js').load('s3', process.env.AWS_ACCESS_KEY_ID, process.env.AWS_SECRET_ACCESS_KEY);    
-  // var bucketName = 'formaggio-dev';
-
-  // s3.setBucket(bucketName);
-
-  // var folder = encodeURI('');
-  // var url = '?prefix=' + folder;
-
-  // s3.get(url, 'xml', function (error, data) {
-  //     console.log(error);
-  //     console.log(data);
-  // });
 
 });
 
