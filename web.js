@@ -89,7 +89,7 @@ app.get('/s3', function(req, res) {
 
   client.listPageOfKeys({ prefix: ''}, function(err, page) {
     console.log(page.Contents);
-    res.send('all done')
+    //res.render('s3list', { files: page.Contents });
   });
 
   // client.streamKeys({ prefix: '' })
