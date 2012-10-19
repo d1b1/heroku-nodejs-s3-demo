@@ -35,7 +35,7 @@ app.configure(function(){
 // -------------------------------------------------------------
 
 app.get('/', function(req, res){
-  fs.readdir( "/tmp", function (err, files) {
+  fs.readdir( '/tmp', function (err, files) {
     if (err) {
       return;
     }
@@ -57,22 +57,19 @@ app.post('/', function(req, res) {
 
   var file = req.files.file;
 
-  client.putFile(file.path, file.name, {'Content-Type': file.type, 'x-amz-acl': 'private'}, 
+  console.log('ddd', encodeURIComponent(file.name));
+
+  client.putFile(file.path, encodeURIComponent(file.name), {'Content-Type': file.type, 'x-amz-acl': 'private'}, 
     function(err, result) {
       if (err) {
-        console.log(err);
-        // res.send(err);
         return; 
       } else {
         if (200 == result.statusCode) { 
           console.log('Uploaded to Amazon S3!');
         } else { 
-          //console.log(result);
           console.log('Failed to upload file to Amazon S3'); 
-          console.log(result);
-          return;
         }
-        
+
         res.redirect('/'); 
       }
   });
