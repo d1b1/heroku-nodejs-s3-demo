@@ -1,0 +1,152 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'install', 'mime-magic' ]
+2 info using npm@1.1.52
+3 info using node@v0.6.9
+4 verbose node symlink /usr/local/bin/node
+5 verbose read json /Users/steve/Dropbox/github/RandD/nodeloader/package.json
+6 verbose read json /Users/steve/Dropbox/github/RandD/nodeloader/node_modules/aws2js/package.json
+7 verbose read json /Users/steve/Dropbox/github/RandD/nodeloader/node_modules/express/package.json
+8 verbose read json /Users/steve/Dropbox/github/RandD/nodeloader/node_modules/jade/package.json
+9 verbose read json /Users/steve/Dropbox/github/RandD/nodeloader/node_modules/knox/package.json
+10 verbose read json /Users/steve/Dropbox/github/RandD/nodeloader/node_modules/path/package.json
+11 verbose read json /Users/steve/Dropbox/github/RandD/nodeloader/node_modules/request/package.json
+12 verbose from cache /Users/steve/Dropbox/github/RandD/nodeloader/package.json
+13 verbose readDependencies using package.json deps
+14 verbose cache add [ 'mime-magic', null ]
+15 silly cache add name=undefined spec="mime-magic" args=["mime-magic",null]
+16 verbose parsed url { pathname: 'mime-magic',
+16 verbose parsed url   path: 'mime-magic',
+16 verbose parsed url   href: 'mime-magic' }
+17 silly lockFile b3ee9f84-mime-magic mime-magic
+18 verbose lock mime-magic /Users/steve/.npm/b3ee9f84-mime-magic.lock
+19 silly lockFile b3ee9f84-mime-magic mime-magic
+20 verbose addNamed [ 'mime-magic', '' ]
+21 verbose addNamed [ null, '' ]
+22 silly lockFile 48d74b2b-mime-magic mime-magic@
+23 verbose lock mime-magic@ /Users/steve/.npm/48d74b2b-mime-magic.lock
+24 silly addNameRange { name: 'mime-magic', range: '', hasData: false }
+25 verbose registry.get mime-magic not expired, no request
+26 silly addNameRange number 2 { name: 'mime-magic', range: '', hasData: true }
+27 silly addNameRange versions [ 'mime-magic',
+27 silly addNameRange   [ '0.1.0',
+27 silly addNameRange     '0.1.1',
+27 silly addNameRange     '0.2.0',
+27 silly addNameRange     '0.2.1',
+27 silly addNameRange     '0.2.2',
+27 silly addNameRange     '0.2.3',
+27 silly addNameRange     '0.2.4',
+27 silly addNameRange     '0.2.5',
+27 silly addNameRange     '0.2.6',
+27 silly addNameRange     '0.3.0',
+27 silly addNameRange     '0.4.0' ] ]
+28 verbose addNamed [ 'mime-magic', '0.4.0' ]
+29 verbose addNamed [ '0.4.0', '0.4.0' ]
+30 silly lockFile 6654bc06-mime-magic-0-4-0 mime-magic@0.4.0
+31 verbose lock mime-magic@0.4.0 /Users/steve/.npm/6654bc06-mime-magic-0-4-0.lock
+32 verbose read json /Users/steve/.npm/mime-magic/0.4.0/package/package.json
+33 silly lockFile 6654bc06-mime-magic-0-4-0 mime-magic@0.4.0
+34 silly lockFile 48d74b2b-mime-magic mime-magic@
+35 silly resolved [ { name: 'mime-magic',
+35 silly resolved     version: '0.4.0',
+35 silly resolved     main: './lib/mime-magic.js',
+35 silly resolved     description: 'Proper MIME type detection library that wraps the libmagic functionality',
+35 silly resolved     engines: { node: '>=0.4.x' },
+35 silly resolved     homepage: 'https://github.com/SaltwaterC/mime-magic',
+35 silly resolved     author: { name: 'Stefan Rusu', url: 'http://www.saltwaterc.eu/' },
+35 silly resolved     contributors: [ [Object], [Object] ],
+35 silly resolved     repository:
+35 silly resolved      { type: 'git',
+35 silly resolved        url: 'git://github.com/SaltwaterC/mime-magic.git' },
+35 silly resolved     keywords:
+35 silly resolved      [ 'mime',
+35 silly resolved        'magic',
+35 silly resolved        'libmagic',
+35 silly resolved        'file',
+35 silly resolved        'wrapper',
+35 silly resolved        'windows',
+35 silly resolved        'win32' ],
+35 silly resolved     scripts:
+35 silly resolved      { preinstall: 'node make.js build',
+35 silly resolved        preuninstall: 'node make.js purge' },
+35 silly resolved     readme: '## About\n\nMIME type detection library for node.js. Unlike the [mime](https://github.com/broofa/node-mime) module, mime-magic does not return the type by interpreting the file extension. Instead it uses the [libmagic(3)](http://linux.die.net/man/3/libmagic) library which provides the result by reading the "magic number" of the file itself.\n\nCurrently it provides just a simple [file(1)](http://linux.die.net/man/1/file) wrapper to get the things moving, but in the long run, the purpose of this module is to provide proper node.js libmagic bindings. The file(1) source tree is provided along with this package. It is built during the installation process. The module aims to use the latest available file version along with the up-to-date magic database.\n\nThe Windows version of file(1) is bundled with the package. It is a native binary build with MinGW and compressed with UPX.\n\n## Installation\n\nEither manually clone this repository into your node_modules directory, run `make build` (under unices), or the recommended method:\n\n> npm install mime-magic\n\n## Usage mode\n\n```javascript\nvar mime = require(\'mime-magic\');\n\nmime(\'/path/to/foo.pdf\', function (err, type) {\n\tif (err) {\n\t\tconsole.error(err.message);\n\t\t// ERROR: cannot open `/path/to/foo.pdf\' (No such file or directory)\n\t} else {\n\t\tconsole.log(\'Detected mime type: %s\', type);\n\t\t// application/pdf\n\t}\n});\n```\n\nYou may use an array of paths. The callback gets an array of mimes:\n\n```javascript\nvar files = [\n\t\'/path/to/foo.pdf\',\n\t\'/path/to/foo.txt\'\n];\n\nmime(files, function (err, types) {\n\tif (err) {\n\t\tconsole.error(err.message);\n\t\t// ERROR: cannot open `/path/to/foo.pdf\' (No such file or directory)\n\t\t// ERROR: cannot open `/path/to/foo.txt\' (No such file or directory)\n\t} else {\n\t\tconsole.log(types);\n\t\t// [\'application/pdf\', \'text/plain\']\n\t}\n});\n```\n\nUnder Windows, you must escape the backslash separators of the path argument:\n\n```javascript\nmime(\'C:\\\\path\\\\to\\\\foo.pdf\', function (err, type) {\n\t// do something\n});\n```\n\nYou may also pass a path that uses forward slashes as separators:\n\n```javascript\nmime(\'C:/path/to/foo.pdf\', function (err, type) {\n\t// do something\n});\n```\n\nPassing relative paths is supported. The file wrapper uses child_process.execFile() behind the scenes, therefore the err argument contains the information returned by the execFile() method itself plus the error message returned by file(1).\n\n## Notices\n\nThe mime.fileWrapper method is deprecated. The preferred method is to call the module directly.\n\nThe module is developed under Ubuntu 12.04, and Windows 7. It is tested under OS X Lion, and FreeBSD 9.0. Other platforms may be supported, but the behavior is untested.\n\nThe Windows binaries are built by myself under Windows 7 / MinGW + MSYS. The binaries are packed with the [UPX](http://upx.sourceforge.net/) tool in order to make them smaller.\n\nHere\'s the virustotal.com analysis:\n\n * [file.exe](https://www.virustotal.com/file/8e4b6b373538ff98be4df14af0f6ccbd6b1306febc0a37a2a5c7d26f6d8f30f6/analysis/1330428088/) (unpacked)\n * [file.exe](https://www.virustotal.com/file/bf1a01443588e75be0a0b674da0d0467e4203833c4de7a9a1507bffe46a57830/analysis/1330427980/) (packed)\n * [libmagic-1.dll](https://www.virustotal.com/file/0543b99145a57ab425fe48c7613ff85c32185554e6539df1df1ddaf8584755d8/analysis/1330428015/) (packed)\n * [libgnurx-0.dll](https://www.virustotal.com/file/fabb4a8ace8b841e418293fbd41fcb14dd851b1c1e33acd0414669a500cc9540/analysis/1330428002/) (packed)\n\nPlease notice that some antiviruses may throw false positives.\n\n## Contributors\n\n * [Felix Chan](https://github.com/felixchan) - [#1](https://github.com/SaltwaterC/mime-magic/pull/1): couldn\'t use fileWrapper more than once unless restarted server.\n * [eddyb](https://github.com/eddyb) - [#3](https://github.com/SaltwaterC/mime-magic/pull/3): support for arrays of paths, with the callback getting an array of mime-types.\n',
+35 silly resolved     _id: 'mime-magic@0.4.0',
+35 silly resolved     _from: 'mime-magic' } ]
+36 info install mime-magic@0.4.0 into /Users/steve/Dropbox/github/RandD/nodeloader
+37 info installOne mime-magic@0.4.0
+38 verbose from cache /Users/steve/.npm/mime-magic/0.4.0/package/package.json
+39 info /Users/steve/Dropbox/github/RandD/nodeloader/node_modules/mime-magic unbuild
+40 verbose read json /Users/steve/Dropbox/github/RandD/nodeloader/node_modules/mime-magic/package.json
+41 verbose tar unpack /Users/steve/.npm/mime-magic/0.4.0/package.tgz
+42 silly lockFile eb816eed-deloader-node-modules-mime-magic /Users/steve/Dropbox/github/RandD/nodeloader/node_modules/mime-magic
+43 verbose lock /Users/steve/Dropbox/github/RandD/nodeloader/node_modules/mime-magic /Users/steve/.npm/eb816eed-deloader-node-modules-mime-magic.lock
+44 silly gunzTarPerm modes [ '777', '666' ]
+45 silly gunzTarPerm extractEntry package.json
+46 silly gunzTarPerm extractEntry .npmignore
+47 silly gunzTarPerm extractEntry README.md
+48 silly gunzTarPerm extractEntry make.js
+49 silly gunzTarPerm extractEntry LICENSE.md
+50 silly gunzTarPerm extractEntry vendor/file-5.11.tar.gz
+51 silly gunzTarPerm extractEntry bin/file.exe
+52 silly gunzTarPerm extractEntry bin/libgnurx-0.dll
+53 silly gunzTarPerm extractEntry bin/libmagic-1.dll
+54 silly gunzTarPerm extractEntry CHANGELOG.md
+55 silly gunzTarPerm extractEntry lib/mime-magic.js
+56 silly gunzTarPerm extractEntry share/magic.mgc
+57 silly gunzTarPerm extractEntry tests/mime-wrapper-zip.js
+58 silly gunzTarPerm extractEntry tests/mime-wrapper-bz2.js
+59 silly gunzTarPerm extractEntry tests/mime-wrapper-file-not-found.js
+60 silly gunzTarPerm extractEntry tests/mime-wrapper-gz.js
+61 silly gunzTarPerm extractEntry tests/mime-wrapper-text.js
+62 silly gunzTarPerm extractEntry tests/mime-wrapper-pdf.js
+63 silly gunzTarPerm extractEntry tests/mime-wrapper-tar.js
+64 silly gunzTarPerm extractEntry tests/mime-wrapper-text-without-extension.js
+65 silly gunzTarPerm extractEntry tests/mime-wrapper-multiple.js
+66 silly gunzTarPerm extractEntry tests/includes/test.js
+67 silly gunzTarPerm extractEntry tests/data/foo
+68 silly gunzTarPerm extractEntry tests/data/foo.pdf
+69 silly gunzTarPerm extractEntry tests/data/foo.txt
+70 silly gunzTarPerm extractEntry tests/data/foo.txt.bz2
+71 silly gunzTarPerm extractEntry tests/data/foo.txt.gz
+72 silly gunzTarPerm extractEntry tests/data/foo.txt.tar
+73 silly gunzTarPerm extractEntry tests/data/foo.txt.zip
+74 silly gunzTarPerm extractEntry tools/build.sh
+75 silly gunzTarPerm extractEntry tools/debug.sh
+76 silly gunzTarPerm extractEntry tools/lint.sh
+77 silly gunzTarPerm extractEntry tools/test.sh
+78 silly gunzTarPerm extractEntry Makefile
+79 verbose read json /Users/steve/Dropbox/github/RandD/nodeloader/node_modules/mime-magic/package.json
+80 silly lockFile eb816eed-deloader-node-modules-mime-magic /Users/steve/Dropbox/github/RandD/nodeloader/node_modules/mime-magic
+81 info preinstall mime-magic@0.4.0
+82 verbose unsafe-perm in lifecycle true
+83 silly exec sh "-c" "node make.js build"
+84 silly sh,-c,node make.js build,/Users/steve/Dropbox/github/RandD/nodeloader/node_modules/mime-magic spawning
+85 info mime-magic@0.4.0 Failed to exec preinstall script
+86 info /Users/steve/Dropbox/github/RandD/nodeloader/node_modules/mime-magic unbuild
+87 verbose from cache /Users/steve/Dropbox/github/RandD/nodeloader/node_modules/mime-magic/package.json
+88 info preuninstall mime-magic@0.4.0
+89 verbose unsafe-perm in lifecycle true
+90 silly exec sh "-c" "node make.js purge"
+91 silly sh,-c,node make.js purge,/Users/steve/Dropbox/github/RandD/nodeloader/node_modules/mime-magic spawning
+92 info mime-magic@0.4.0 Failed to exec preuninstall script
+93 warn continuing anyway mime-magic@0.4.0 preuninstall: `node make.js purge`
+93 warn continuing anyway `sh "-c" "node make.js purge"` failed with 127
+94 info uninstall mime-magic@0.4.0
+95 verbose true,/Users/steve/Dropbox/github/RandD/nodeloader/node_modules,/Users/steve/Dropbox/github/RandD/nodeloader/node_modules unbuild mime-magic@0.4.0
+96 info postuninstall mime-magic@0.4.0
+97 error mime-magic@0.4.0 preinstall: `node make.js build`
+97 error `sh "-c" "node make.js build"` failed with 127
+98 error Failed at the mime-magic@0.4.0 preinstall script.
+98 error This is most likely a problem with the mime-magic package,
+98 error not with npm itself.
+98 error Tell the author that this fails on your system:
+98 error     node make.js build
+98 error You can get their info via:
+98 error     npm owner ls mime-magic
+98 error There is likely additional logging output above.
+99 error System Darwin 12.2.0
+100 error command "node" "/usr/local/bin/npm" "install" "mime-magic"
+101 error cwd /Users/steve/Dropbox/github/RandD/nodeloader
+102 error node -v v0.6.9
+103 error npm -v 1.1.52
+104 error code ELIFECYCLE
+105 verbose exit [ 1, true ]
