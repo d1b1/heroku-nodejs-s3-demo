@@ -6,23 +6,20 @@ block content
     | This is a list of all the files on either your local
     | node instance, or when running on heroku in live dyno
     | tmp folder.
-    
+
   table.table.table-striped
     thead
       tr
         th Image
         th Local Name
-        th S3 Name
-
+        th Delete?
     tbody
-      - for (var i = 0; i < files.length; ++i)
+      - for (var i = 0; i < params.files.length; ++i)
         tr
          td
-          img(class='img-polaroid', width='50', src='/images/' + files[i])
+          img(class='img-polaroid', width='50', src='/images/' + params.files[i])
           &nbsp;
          td
-          = files[i]
-         td
-          | URL
+          = params.files[i]
          td 
-           button(class="btn btn-small", type="button", onclick="document.location='/local/delete/" + files[i] + "';") Remove
+           button(class="btn btn-small", type="button", onclick="document.location='/local/delete/" + params.files[i] + "';") Remove
