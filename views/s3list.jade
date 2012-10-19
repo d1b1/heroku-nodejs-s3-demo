@@ -36,7 +36,8 @@ block content
           &nbsp;
          td
           = params.files[i].Key
-          = params.files[i].Size
+          br
+          = (params.files[i].Size / 1024 )
          td
           = params.files[i].LastModified
          td 
