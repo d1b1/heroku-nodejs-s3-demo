@@ -29,7 +29,7 @@ block content
     tbody
       - for (var i = 0; i < params.files.length; ++i)
         tr
-         td.lightbox
+         td
           a(href="http://s3.amazonaws.com/formaggio-dev/" + params.files[i].Key) 
             img(class='img-polaroid', width='50', src='http://s3.amazonaws.com/formaggio-dev/' + params.files[i].Key)
           &nbsp;
