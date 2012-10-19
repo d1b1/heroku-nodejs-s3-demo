@@ -38,7 +38,7 @@ block content
           = params.files[i].Key
           br
           = ((params.files[i].Size / 1024 ) / 1024 ).toFixed(1) 
-            MB
+            | MB
          td
           = params.files[i].LastModified
          td 
