@@ -26,6 +26,7 @@ block content
         th File Name / Size
         th Modified
         th Delete
+        th Resize
 
     tbody
       - for (var i=0; i<params.files.length; ++i)
@@ -38,8 +39,10 @@ block content
           = params.files[i].Key
           br
           = ((params.files[i].Size / 1024 ) / 1024 ).toFixed(1) 
-            | MB
+            |  MB
          td
           = params.files[i].LastModified
          td 
            button(class="btn btn-small", type="button", onclick="document.location='/s3/delete/" + params.files[i].Key + "';") Remove
+         td 
+           button(class="btn btn-small", type="button", onclick="document.location='/bitline/resize/" + params.files[i].Key + "';") Resize

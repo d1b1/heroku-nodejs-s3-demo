@@ -2,7 +2,9 @@ var express   = require('express'),
     fs        = require('fs'),
     jade      = require('jade'),
     path      = require('path'),
-    knox      = require('knox');
+    knox      = require('knox'),
+    http      = require('http'),
+    blitline  = require('blitline');
 
 // ---------------------------------------------------
 // Define the express application.
@@ -62,6 +64,33 @@ app.get('/local/delete/:name', function(req, res) {
 
 });
 
+app.get('/bitline/resize/:name', function(req, res) {
+
+  var bl = new blitline();
+
+  var job = bl.addJob(process.env.BLITLINE_API_KEY, 'https://s3.amazonaws.com/formaggio-dev/' + encodeURIComponent(req.params.name) );
+  var crop_function = job.addFunction('resize', { width: 50, height: 50}, 'sfdg');
+
+  console.log('function', crop_function);
+  console.log('');
+
+  var save_function = job.addFunction('save', { s3_destination: 'formaggio-small'} );
+
+  // console.log('jobs', job.functions[0]);
+
+  bl.postJobs(function(response) {
+    
+    console.log(response);
+    // var data = JSON.parse(response);
+    // var image_url = data.results[0].images[0];
+    // console.log(image_url.s3_url);
+
+  });
+
+  res.send('done')
+
+});
+
 app.post('/', function(req, res) {
 
   var client = knox.createClient({
@@ -116,10 +145,10 @@ app.get('/s3/delete/:name', function(req, res) {
 app.get('/', function(req, res) {
 
   var knoxCopy = require('knox-copy');
-
+ 
   var client = knoxCopy.createClient({
-      key: process.env.AWS_ACCESS_KEY_ID,
-      secret: process.env.AWS_SECRET_ACCESS_KEY,
+      key: process.env.AWS_ACCESS_KEY_ID.toString(),
+      secret: process.env.AWS_SECRET_ACCESS_KEY.toString(),
       bucket: 'formaggio-dev'
   });
 

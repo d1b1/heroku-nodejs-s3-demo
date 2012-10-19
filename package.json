@@ -11,7 +11,8 @@
     "jade": "~0.27.2",
     "path": "~0.4.9",
     "knox": "~0.3.1",
-    "knox-copy": "~0.1.0"
+    "knox-copy": "~0.1.0",
+    "blitline": "~1.1.6"
   },
   "scripts": {
     "start": "web.js"
