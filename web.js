@@ -76,10 +76,10 @@ app.post('/', function(req, res) {
         if (200 == result.statusCode) { 
           console.log('Uploaded to Amazon S3!');
 
-          fs.unlink(file.path, function (err) {
-            if (err) throw err;
-            console.log('successfully deleted /'+file.path); 
-          });
+          // fs.unlink(file.path, function (err) {
+          //   if (err) throw err;
+          //   console.log('successfully deleted /'+file.path); 
+          // });
 
         } else { 
           console.log('Failed to upload file to Amazon S3'); 
