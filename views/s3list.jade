@@ -10,14 +10,14 @@ block content
         th S3 Name
 
     tbody
-      - for (var i = 0; i < files.length; ++i)
+      - for (var i = 0; i < params.files.length; ++i)
         tr
          td
-          img(class='img-polaroid', width='50', src='http://s3.amazonaws.com/formaggio-dev/' + files[i].Key)
+          img(class='img-polaroid', width='50', src='http://s3.amazonaws.com/formaggio-dev/' + params.files[i].Key)
           &nbsp;
          td
-          = files[i].Key
+          = params.files[i].Key
          td
           | URL
          td 
-           button(class="btn btn-small", type="button", onclick="document.location='/s3/delete/" + files[i].Key + "';") Remove
+           button(class="btn btn-small", type="button", onclick="document.location='/s3/delete/" + params.files[i].Key + "';") Remove

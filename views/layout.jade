@@ -2,7 +2,7 @@ doctype 5
 html(lang="en")
   head
     title
-      | Heroku + S3 via Node.js - 
+      | Heroku + S3 via Node.js #{(params.title) ? ' - ' + params.title : ''}
     meta(name='charset', content='UTF-8')
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     link(rel='stylesheet', href='/assets/css/bootstrap.css')
@@ -32,20 +32,31 @@ html(lang="en")
                 a(href="/local") Local Files
               li
                 a(href="/about") About
+
+    .div.hidden-tablet.nav-collapse.hidden-phone
+      a(href="https://github.com/d1b1/heroku-nodejs-s3-demo", class="hidden-tablet hidden-phone") 
+        img(style="z-index: 3000; position: absolute; top: 0; right: 0; border: 0;", class="hidden-tablet hidden-phone", src="/assets/img/forkme_right_gray_6d6d6d.png", alt="Fork me on GitHub")
+
     div.container
 
-      div.row
-        .span12.hero-unit
-          form(method="post", action="/", enctype="multipart/form-data")
-            input(type="file", class="btn", name="file")
-            input(type="submit", class="btn", value="Upload")
+      - if (params.title) 
+        h2 #{params.title}
+
+      - if (params.showform)
+        div.row
+          .span12
+            form(method="post", action="/", enctype="multipart/form-data")
+              input(type="file", class="btn", name="file")
+              input(type="submit", class="btn btn-large", value="Upload")
 
       block content
 
       hr
 
       footer
-        p &copy; SoEnd.com 2012
+        p 
+          &copy; 
+          a(href="https://github.com/d1b1") d1b1 2012
 
 
 

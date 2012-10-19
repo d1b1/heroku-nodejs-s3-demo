@@ -35,7 +35,7 @@ app.configure(function(){
 // -------------------------------------------------------------
 
 app.get('/about', function(req, res){
-  res.render('about');
+  res.render('about', { params : { title: 'Proof of Concept', showform: false } });
 });
 
 app.get('/local', function(req, res){
@@ -43,7 +43,7 @@ app.get('/local', function(req, res){
     if (err) {
       return;
     }
-    res.render('list', { files: files });
+    res.render('list', { title: 'Local Files', params: { showform: true, files: files }});
   });
 });
 
@@ -125,7 +125,7 @@ app.get('/', function(req, res) {
 
   client.listPageOfKeys({ prefix: ''}, function(err, page) {
     console.log(page.Contents);
-    res.render('s3list', { files: page.Contents });
+    res.render('s3list', { params: { title: 'S3 Files', showform: true, files: page.Contents }});
   });
 
 });
