@@ -66,7 +66,7 @@ app.get('/s3/delete/:name', function(req, res) {
       bucket: 'formaggio-dev'
   });
 
-  client.del(req.params.name)
+  client.del(encodeURIComponent(req.params.name))
     .on('response', function(result){
       console.log('Delete Code', result.statusCode);
       console.log('Delete Header', result.headers);
