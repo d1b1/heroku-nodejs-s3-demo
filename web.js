@@ -102,7 +102,7 @@ app.post('/', function(req, res) {
           console.log('Failed to upload file to Amazon S3'); 
         }
 
-        res.redirect('/s3'); 
+        res.redirect('/'); 
       }
   });
 
