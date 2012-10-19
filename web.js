@@ -34,6 +34,10 @@ app.configure(function(){
 
 // -------------------------------------------------------------
 
+app.get('/about', function(req, res){
+  res.render('about');
+});
+
 app.get('/local', function(req, res){
   fs.readdir( '/tmp', function (err, files) {
     if (err) {
@@ -103,7 +107,7 @@ app.get('/s3/delete/:name', function(req, res) {
     .on('response', function(result){
       console.log('Delete Code', result.statusCode);
       console.log('Delete Header', result.headers);
-      
+
       res.redirect('/'); 
     }).end();
 
