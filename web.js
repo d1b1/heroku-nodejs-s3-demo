@@ -65,11 +65,11 @@ app.get('/s3/delete/:name', function(req, res) {
       secret: process.env.AWS_SECRET_ACCESS_KEY,
       bucket: 'formaggio-dev'
   });
-  
+
   client.del(req.params.name)
-    .on('response', function(res){
-      console.log(res.statusCode);
-      console.log(res.headers);
+    .on('response', function(result){
+      console.log('Delete Code', result.statusCode);
+      console.log('Delete Header', result.headers);
       res.redirect('/'); 
     }).end();
 
@@ -92,7 +92,12 @@ app.post('/', function(req, res) {
       } else {
         if (200 == result.statusCode) { 
           console.log('Uploaded to Amazon S3!');
-          // fs.unlink(file.path);
+
+          fs.unlink(file.path, function (err) {
+            if (err) throw err;
+            console.log('successfully deleted /'+file.path); 
+          });
+
         } else { 
           console.log('Failed to upload file to Amazon S3'); 
         }
