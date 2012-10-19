@@ -103,7 +103,8 @@ app.get('/s3/delete/:name', function(req, res) {
     .on('response', function(result){
       console.log('Delete Code', result.statusCode);
       console.log('Delete Header', result.headers);
-      res.redirect('/s3'); 
+      
+      res.redirect('/'); 
     }).end();
 
 });
