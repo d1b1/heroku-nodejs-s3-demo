@@ -78,18 +78,25 @@ app.post('/', function(req, res) {
 
 app.get('/s3', function(req, res) {
 
-  var s3 = require('aws2js').load('s3', process.env.AWS_ACCESS_KEY_ID, process.env.AWS_SECRET_ACCESS_KEY);    
-  var bucketName = 'formaggio-dev';
-
-  s3.setBucket(bucketName);
-
-  var folder = encodeURI('');
-  var url = '?prefix=' + folder;
-
-  s3.get(url, 'xml', function (error, data) {
-      console.log(error);
-      console.log(data);
+  client.streamKeys({
+    // omit the prefix to list the whole bucket
+    prefix: '' 
+  }).on('data', function(key) {
+    console.log(key);
   });
+
+  // var s3 = require('aws2js').load('s3', process.env.AWS_ACCESS_KEY_ID, process.env.AWS_SECRET_ACCESS_KEY);    
+  // var bucketName = 'formaggio-dev';
+
+  // s3.setBucket(bucketName);
+
+  // var folder = encodeURI('');
+  // var url = '?prefix=' + folder;
+
+  // s3.get(url, 'xml', function (error, data) {
+  //     console.log(error);
+  //     console.log(data);
+  // });
 
 });
 
