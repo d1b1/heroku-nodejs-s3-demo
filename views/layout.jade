@@ -13,6 +13,7 @@ html(lang="en")
       }
     link(rel='stylesheet', href='/assets/css/bootstrap-responsive.css')
     script(src='/assets/js/jquery.js')
+    script(src='/assets/js/bootstrap.min.js')
     block header
   body
     .navbar.navbar-inverse.navbar-fixed-top
@@ -26,18 +27,18 @@ html(lang="en")
           div.nav-collapse.collapse
             ul.nav
               li
-                a(href="/") Local Files
+                a(href="/") S3 Files
               li
-                a(href="/s3") S3 Files
+                a(href="/local") Local Files
               li
                 a(href="/about") About
     div.container
 
       div.row
-        .span12
+        .span12.hero-unit
           form(method="post", action="/", enctype="multipart/form-data")
-            input(type="file", name="file")
-            input(type="submit", value="Upload")
+            input(type="file", class="btn", name="file")
+            input(type="submit", class="btn", value="Upload")
 
       block content
 
