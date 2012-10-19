@@ -43,6 +43,7 @@ html(lang="en")
         h2 #{params.title}
 
       - if (params.showform)
+        p Use this form to upload images to S3. 
         div.row
           .span12
             form(method="post", action="/", enctype="multipart/form-data")
