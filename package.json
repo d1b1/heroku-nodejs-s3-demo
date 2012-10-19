@@ -9,7 +9,8 @@
     "express": "3.0.0rc2",
     "request": "2.9.202",
     "jade": "~0.27.2",
-    "path": "~0.4.9"
+    "path": "~0.4.9",
+    "knox": "~0.3.1"
   },
   "scripts": {
     "start": "web.js"

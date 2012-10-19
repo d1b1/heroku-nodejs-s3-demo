@@ -1,7 +1,8 @@
-var express    = require('express'),
-    fs         = require('fs'),
-    jade       = require('jade'),
-    path       = require('path');
+var express   = require('express'),
+    fs        = require('fs'),
+    jade      = require('jade'),
+    path      = require('path'),
+    knox      = require('knox');
 
 // ---------------------------------------------------
 // Define the express application.
@@ -34,60 +35,43 @@ app.configure(function(){
 // -------------------------------------------------------------
 
 app.get('/', function(req, res){
-
   fs.readdir( "/tmp", function (err, files) {
     if (err) {
-      console.log(err);
       return;
     }
-
-    console.log(files);
     res.render('list', { files: files });
   });
-
 });
 
 app.get('/show/:name', function(req, res) {
   fs.createReadStream( path + req.params.name ).pipe(res);
 });
 
-app.get('/list', function(req, res) {
-
-  fs.readdir( "/tmp", function (err, files) {
-    if (err) {
-      console.log(err);
-      return;
-    }
-    res.render('list', { files: files });
-  });
-
+var client = knox.createClient({
+    key: process.env.AWS_ACCESS_KEY_ID.toString(),
+    secret: process.env.AWS_SECRET_ACCESS_KEY.toString(),
+    bucket: 'formaggio-dev'
 });
 
 app.post('/', function(req, res) {
 
-  console.log(req.files);
+  var file = req.files.file;
 
-  //res.send(req.files);
+  client.putFile(file.path, file.name, {'Content-Type': file.type, 'x-amz-acl': 'private'}, 
+    function(err, result) {
+      if (err) {
+        res.send(err);
+        return; 
+      } else {
+        if (200 == result.statusCode) { 
+          console.log('Uploaded to Amazon S3!');
+        } else { 
+          console.log('Failed to upload file to Amazon S3'); 
+        }
+        res.redirect('/'); 
+      }
+  });
 
-  res.redirect('/'); 
-
-  // req.form.complete(function(err, fields, files) {
-  //   if(err) {
-  //     next(err);
-  //   } else {
-  //     ins = fs.createReadStream(files.photo.path);
-  //     ous = fs.createWriteStream(__dirname + '/directory were u want to store image/' + files.photo.filename);
-  //     util.pump(ins, ous, function(err) {
-  //       if(err) {
-  //         next(err);
-  //       } else {
-  //         res.redirect('/photos');
-  //       }
-  //     });
-  //     //console.log('\nUploaded %s to %s', files.photo.filename, files.photo.path);
-  //     //res.send('Uploaded ' + files.photo.filename + ' to ' + files.photo.path);
-  //   }
-  // });
 });
 
 // ------ Start the App ----------------------------------------
