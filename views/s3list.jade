@@ -22,12 +22,13 @@ block content
   table.table.table-striped
     thead
       tr
-        th Image
-        th Local Name
-        th S3 Name
+        th 
+        th File Name / Size
+        th Modified
+        th Delete
 
     tbody
-      - for (var i = 0; i < params.files.length; ++i)
+      - for (var i=0; i<params.files.length; ++i)
         tr
          td
           a(href="http://s3.amazonaws.com/formaggio-dev/" + params.files[i].Key, target="_blank") 
@@ -35,7 +36,8 @@ block content
           &nbsp;
          td
           = params.files[i].Key
+          = params.files[i].Size
          td
-          | URL
+          = params.files[i].LastModified
          td 
            button(class="btn btn-small", type="button", onclick="document.location='/s3/delete/" + params.files[i].Key + "';") Remove
