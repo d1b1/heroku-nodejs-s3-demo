@@ -88,9 +88,9 @@ app.get('/s3', function(req, res) {
   });
 
   client.streamKeys({ prefix: '' })
-    .on('data', function(key) {
+    .on('response', function(key) {
       console.log(key);
-    }).end();
+    });
 
   // var s3 = require('aws2js').load('s3', process.env.AWS_ACCESS_KEY_ID, process.env.AWS_SECRET_ACCESS_KEY);    
   // var bucketName = 'formaggio-dev';
