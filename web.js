@@ -88,7 +88,7 @@ app.get('/s3', function(req, res) {
   });
 
   client.streamKeys({ prefix: '' })
-    .on('response', function(key) {
+    .on('data', function(key) {
       console.log(key);
     });
 
