@@ -47,7 +47,7 @@ app.get('/show/:name', function(req, res) {
   fs.createReadStream( path + req.params.name ).pipe(res);
 });
 
-app.get('/delete/:name', function(req, res) {
+app.get('/local/delete/:name', function(req, res) {
 
   fs.unlink('/tmp/' + req.params.name, function (err) {
     if (err) throw err;
@@ -70,7 +70,7 @@ app.get('/s3/delete/:name', function(req, res) {
     .on('response', function(result){
       console.log('Delete Code', result.statusCode);
       console.log('Delete Header', result.headers);
-      res.redirect('/'); 
+      res.redirect('/s3'); 
     }).end();
 
 });
@@ -102,7 +102,7 @@ app.post('/', function(req, res) {
           console.log('Failed to upload file to Amazon S3'); 
         }
 
-        res.redirect('/'); 
+        res.redirect('/s3'); 
       }
   });
 
