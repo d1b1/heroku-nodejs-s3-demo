@@ -69,14 +69,12 @@ app.get('/bitline/resize/:name', function(req, res) {
   var bl = new blitline();
 
   var job = bl.addJob(process.env.BLITLINE_API_KEY, 'https://s3.amazonaws.com/formaggio-dev/' + encodeURIComponent(req.params.name) );
-  var crop_function = job.addFunction('resize', { width: 50, height: 50}, 'sfdg');
+  var crop_function = job.addFunction('resize', { width: 50, height: 50 }, 'sfdg');
 
-  console.log('function', crop_function);
-  console.log('');
+  //var kkkk = job.addSave('resize', 'formaggio-dev', 'sfdg');
 
-  var save_function = job.addFunction('save', { s3_destination: 'formaggio-small'} );
-
-  // console.log('jobs', job.functions[0]);
+  //console.log('function', kkkk);
+  //console.log('');
 
   bl.postJobs(function(response) {
     
