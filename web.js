@@ -28,8 +28,8 @@ app.configure(function(){
 
   app.use(app.router);
 
-  app.use('/', express.static(__dirname + '/'));
   app.use('/images', express.static( '/tmp' ));
+  app.use('/', express.static(path.join(__dirname, '/')));
 });
 
 // -------------------------------------------------------------
