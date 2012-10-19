@@ -47,13 +47,14 @@ app.get('/show/:name', function(req, res) {
   fs.createReadStream( path + req.params.name ).pipe(res);
 });
 
-var client = knox.createClient({
-    key: process.env.AWS_ACCESS_KEY_ID,
-    secret: process.env.AWS_SECRET_ACCESS_KEY,
-    bucket: 'formaggio-dev'
-});
 
 app.post('/', function(req, res) {
+
+  var client = knox.createClient({
+      key: process.env.AWS_ACCESS_KEY_ID,
+      secret: process.env.AWS_SECRET_ACCESS_KEY,
+      bucket: 'formaggio-dev'
+  });
 
   var file = req.files.file;
 
@@ -78,12 +79,18 @@ app.post('/', function(req, res) {
 
 app.get('/s3', function(req, res) {
 
-  client.streamKeys({
-    // omit the prefix to list the whole bucket
-    prefix: '' 
-  }).on('data', function(key) {
-    console.log(key);
+  var knoxCopy = require('knox-copy');
+
+  var client = knoxCopy.createClient({
+      key: process.env.AWS_ACCESS_KEY_ID,
+      secret: process.env.AWS_SECRET_ACCESS_KEY,
+      bucket: 'formaggio-dev'
   });
+
+  client.streamKeys({ prefix: '' })
+    .on('data', function(key) {
+      console.log(key);
+    });
 
   // var s3 = require('aws2js').load('s3', process.env.AWS_ACCESS_KEY_ID, process.env.AWS_SECRET_ACCESS_KEY);    
   // var bucketName = 'formaggio-dev';

@@ -10,7 +10,8 @@
     "request": "2.9.202",
     "jade": "~0.27.2",
     "path": "~0.4.9",
-    "knox": "~0.3.1"
+    "knox": "~0.3.1",
+    "knox-copy": "~0.1.0"
   },
   "scripts": {
     "start": "web.js"
