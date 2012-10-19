@@ -58,23 +58,6 @@ app.get('/local/delete/:name', function(req, res) {
 
 });
 
-app.get('/s3/delete/:name', function(req, res) {
-
-  var client = knox.createClient({
-      key: process.env.AWS_ACCESS_KEY_ID,
-      secret: process.env.AWS_SECRET_ACCESS_KEY,
-      bucket: 'formaggio-dev'
-  });
-
-  client.del(encodeURIComponent(req.params.name))
-    .on('response', function(result){
-      console.log('Delete Code', result.statusCode);
-      console.log('Delete Header', result.headers);
-      res.redirect('/s3'); 
-    }).end();
-
-});
-
 app.post('/', function(req, res) {
 
   var client = knox.createClient({
@@ -102,9 +85,27 @@ app.post('/', function(req, res) {
           console.log('Failed to upload file to Amazon S3'); 
         }
 
-        res.redirect('/'); 
+        req.method = 'get'; 
+        res.redirect('/s3'); 
       }
   });
+
+});
+
+app.get('/s3/delete/:name', function(req, res) {
+
+  var client = knox.createClient({
+      key: process.env.AWS_ACCESS_KEY_ID,
+      secret: process.env.AWS_SECRET_ACCESS_KEY,
+      bucket: 'formaggio-dev'
+  });
+
+  client.del(encodeURIComponent(req.params.name))
+    .on('response', function(result){
+      console.log('Delete Code', result.statusCode);
+      console.log('Delete Header', result.headers);
+      res.redirect('/s3'); 
+    }).end();
 
 });
 
