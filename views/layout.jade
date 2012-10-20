@@ -60,9 +60,9 @@ html(lang="en")
         p Use this form to upload images to S3. 
         div.row
           .span12
-            form(method="post", action="/", enctype="multipart/form-data")
+            form(method="post", action="/", data-toggle-value="is_private", enctype="multipart/form-data")
               input(type="file", class="btn", name="file")
-              input(type="submit", class="btn btn-large", value="Upload")
+              input(type="submit", class="btn btn-large", data-toggle="button", value="Upload")
 
       block content
 

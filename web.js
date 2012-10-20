@@ -4,7 +4,7 @@ var express   = require('express'),
     path      = require('path'),
     knox      = require('knox'),
     http      = require('http'),
-    blitline  = require('blitline');
+    Blitline  = require('blitline');
 
 // ---------------------------------------------------
 // Define the express application.
@@ -64,28 +64,40 @@ app.get('/local/delete/:name', function(req, res) {
 
 });
 
-app.get('/bitline/resize/:name', function(req, res) {
+var resizer = function( filename, width, height ) {
 
-  var bl = new blitline();
+  var blitline = new Blitline();
 
-  var job = bl.addJob(process.env.BLITLINE_API_KEY, 'https://s3.amazonaws.com/formaggio-dev/' + encodeURIComponent(req.params.name) );
-  var crop_function = job.addFunction('resize', { width: 50, height: 50 }, 'sfdg');
+  var url = 'http://s3.amazonaws.com/formaggio-dev/' + filename;
+  var folder = width.toString() + 'x' + height.toString();
 
-  //var kkkk = job.addSave('resize', 'formaggio-dev', 'sfdg');
+  var job = blitline.addJob(process.env.BLITLINE_API_KEY, url);
+  job.addFunction('resize_to_fit', { width: width, height: height}, 'my_blurred_cropped_image')
+    .addSave('my_image', 'formaggio-small', folder + '/' + filename.replace(/ /g, "-"));
 
-  //console.log('function', kkkk);
-  //console.log('');
-
-  bl.postJobs(function(response) {
-    
-    console.log(response);
-    // var data = JSON.parse(response);
-    // var image_url = data.results[0].images[0];
-    // console.log(image_url.s3_url);
-
+  blitline.postJobs(function(response) {
+    // console.log(response);
   });
 
-  res.send('done')
+}
+
+app.get('/bitline/resize/:name', function(req, res) {
+
+  resizer( req.params.name, 100, 100, '100x100' );
+
+  res.redirect('/');
+
+  // var blitline = new Blitline();
+
+  // var url = 'http://s3.amazonaws.com/formaggio-dev/' + encodeURIComponent(req.params.name);
+  // var job = blitline.addJob(process.env.BLITLINE_API_KEY, url);
+  // job.addFunction('resize_to_fit', { width: 100, height: 100}, 'my_blurred_cropped_image')
+  //   .addSave('my_image', 'formaggio-small', '100x100/' + (req.params.name).replace(/ /g, "-"));
+
+  // blitline.postJobs(function(response) {
+  //   console.log(response);
+  //   res.redirect('/')
+  // });
 
 });
 
@@ -98,14 +110,18 @@ app.post('/', function(req, res) {
   });
 
   var file = req.files.file;
+  var filename = (file.name).replace(/ /g, '-');
 
-  client.putFile(file.path, encodeURIComponent(file.name), {'Content-Type': file.type, 'x-amz-acl': 'public-read'}, 
+  client.putFile(file.path, filename, {'Content-Type': file.type, 'x-amz-acl': 'public-read'}, 
     function(err, result) {
       if (err) {
         return; 
       } else {
         if (200 == result.statusCode) { 
           console.log('Uploaded to Amazon S3!');
+
+          resizer( filename, 100, 100 );
+          resizer( filename, 400, 600 );
 
           fs.unlink(file.path, function (err) {
             if (err) throw err;
@@ -151,7 +167,6 @@ app.get('/', function(req, res) {
   });
 
   client.listPageOfKeys({ prefix: ''}, function(err, page) {
-    console.log(page.Contents);
     res.render('s3list', { params: { title: 'S3 Files', showform: true, files: page.Contents }});
   });
 
