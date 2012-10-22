@@ -2,9 +2,9 @@ This is a demo application that shows how to manage file uploads and AWS using N
 This sample app makes use of the Heroku 'ephemeral file system'.
 
 ## Reference
-* (Heroku Ephermal File Storage)https://devcenter.heroku.com/articles/dynos#ephemeral-filesystem
-* (Node.js Knox Package)https://github.com/LearnBoost/knox
-* (Node.js Blitline Package)https://github.com/blitline-dev/blitline_node
+* [Heroku Ephermal File Storage](https://devcenter.heroku.com/articles/dynos#ephemeral-filesystem)
+* [Node.js Knox Package](https://github.com/LearnBoost/knox)
+* [Node.js Blitline Package](https://github.com/blitline-dev/blitline_node)
 
 ## Requirements
 
