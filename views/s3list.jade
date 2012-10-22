@@ -31,8 +31,8 @@ block content
     tbody
       - for (var i=0; i<params.files.length; ++i)
         tr
-         td
-          a(href="http://s3.amazonaws.com/formaggio-dev/" + params.files[i].Key.replace(/ /g, '-'), target="_blank") 
+         td.lightbox
+          a(href="http://s3.amazonaws.com/formaggio-small/400x600/" + params.files[i].Key.replace(/ /g, '-'), target="_blank") 
             img(class='img-polaroid', width='50', src='http://s3.amazonaws.com/formaggio-small/100x100/' + params.files[i].Key.replace(/ /g, '-'))
           &nbsp;
          td

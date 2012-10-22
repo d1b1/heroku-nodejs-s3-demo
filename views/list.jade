@@ -4,8 +4,10 @@ extends layout
 block content
   div
     | This is a list of all the files on either your local
-    | node instance, or when running on heroku in live dyno
-    | tmp folder.
+    | node instance. When running on heroku this list not 
+    | show any files as the project code removes files from 
+    | the ephemeral file storage /tmp as soon as they are 
+    | uploaded to AWS.
 
   table.table.table-striped
     thead

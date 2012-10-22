@@ -57,9 +57,9 @@ app.get('/local/delete/:name', function(req, res) {
 
   fs.unlink('/tmp/' + req.params.name, function (err) {
     if (err) throw err;
-    console.log('successfully deleted /tmp/'+req.params.name);
+    console.log('successfully deleted /tmp/' + req.params.name);
 
-    res.redirect('/'); 
+    res.redirect('/local'); 
   });
 
 });
@@ -76,6 +76,7 @@ var resizer = function( filename, width, height ) {
     .addSave('my_image', 'formaggio-small', folder + '/' + filename.replace(/ /g, "-"));
 
   blitline.postJobs(function(response) {
+    // Should have response, but it not really needed for poc.
     // console.log(response);
   });
 
@@ -83,22 +84,16 @@ var resizer = function( filename, width, height ) {
 
 app.get('/bitline/resize/:name', function(req, res) {
 
-  resizer( req.params.name, 100, 100, '100x100' );
+  // Sanitize the filename.
+  var filename = (req.params.name).replace(/ /g, '-');
+
+  // TODO Make certain the image is in the tmp folder.
+
+  // Ok call the resizer.
+  resizer(filename, 100, 100);
+  resizer(filename, 400, 600 );
 
   res.redirect('/');
-
-  // var blitline = new Blitline();
-
-  // var url = 'http://s3.amazonaws.com/formaggio-dev/' + encodeURIComponent(req.params.name);
-  // var job = blitline.addJob(process.env.BLITLINE_API_KEY, url);
-  // job.addFunction('resize_to_fit', { width: 100, height: 100}, 'my_blurred_cropped_image')
-  //   .addSave('my_image', 'formaggio-small', '100x100/' + (req.params.name).replace(/ /g, "-"));
-
-  // blitline.postJobs(function(response) {
-  //   console.log(response);
-  //   res.redirect('/')
-  // });
-
 });
 
 app.post('/', function(req, res) {
@@ -120,6 +115,7 @@ app.post('/', function(req, res) {
         if (200 == result.statusCode) { 
           console.log('Uploaded to Amazon S3!');
 
+          // call the resizer function for to different sizes.
           resizer( filename, 100, 100 );
           resizer( filename, 400, 600 );
 
@@ -149,8 +145,6 @@ app.get('/s3/delete/:name', function(req, res) {
   client.del(encodeURIComponent(req.params.name))
     .on('response', function(result){
       console.log('Delete Code', result.statusCode);
-      console.log('Delete Header', result.headers);
-
       res.redirect('/'); 
     }).end();
 
@@ -176,5 +170,5 @@ app.get('/', function(req, res) {
 
 var port = process.env.PORT || 4000;
 app.listen(port, function() { 
-  console.log('StartUp: api.formagg.io ' + port ); 
+  console.log('StartUp: nodeloader for Heroku ' + port ); 
 });
