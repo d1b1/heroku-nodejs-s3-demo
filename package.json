@@ -1,6 +1,9 @@
 {
   "name": "uploader",
   "version": "0.0.2",
+  "description": "Sample project that implements image upload and resizing using node.js, blitline.com and AWS s3 on Heroku via ephemeral file storage.",
+  "repository": "git://github.com/d1b1/heroku-nodejs-s3-demo",
+  "author": "Stephan Smith (Stephan.Smith.bc93@gmail.com) d1b1",
   "engines": {
     "node": "0.8.x",
     "npm": "1.1.x"

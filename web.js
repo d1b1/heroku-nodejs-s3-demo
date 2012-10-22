@@ -172,15 +172,19 @@ app.get('/', function(req, res) {
   var client = knoxCopy.createClient(knox_params);
 
   client.listPageOfKeys({ prefix: 'scratch'}, function(err, page) {
-    // Call the template with the page data.
-    res.render('s3list', { 
-      params: { 
-        amazon_url: amazon_url, 
-        title: 'List of S3 Resources', 
-        showform: true, 
-        files: page.Contents 
+    if (err) {
+      console.log('Error',  err);
+    } else {
+      // Call the template with the page data.
+      res.render('s3list', { 
+        params: { 
+          amazon_url: amazon_url, 
+          title: 'List of S3 Resources', 
+          showform: true, 
+          files: page.Contents 
+        }
+      });
       }
-    });
   });
 
 });
