@@ -17,10 +17,14 @@ To test this application you need to define the following variables in either yo
 local node workspace (.bash_profile) or as heroku configuration variables. I usually
 create a .settings file in my local workspace and add .setting to my repos .gitignore.
 
+For local development (.settings or ~/.bash_profile)
+
     export AWS_ACCESS_KEY_ID=XXXXX
     export AWS_ACCESS_ACCESS_KEY=XXXX
     export AWS_S3_BUCKET=XXXXXXXX
     export BLITLINE_API_KEY=XXXXX
+
+For Heroku Config SDK
 
     heroku config:add AWS_ACCESS_KEY_ID=XXXXX
     heroku config:add AWS_ACCESS_ACCESS_KEY=XXXX
