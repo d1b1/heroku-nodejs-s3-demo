@@ -174,6 +174,14 @@ app.get('/', function(req, res) {
   client.listPageOfKeys({ prefix: 'scratch'}, function(err, page) {
     if (err) {
       console.log('Error',  err);
+      res.render('error', {         
+        params: { 
+          amazon_url: amazon_url, 
+          title: 'List of S3 Resources', 
+          showform: true, 
+          files: page.Contents 
+        }
+      });
     } else {
       // Call the template with the page data.
       res.render('s3list', { 
