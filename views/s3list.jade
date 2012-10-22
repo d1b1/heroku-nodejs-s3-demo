@@ -32,8 +32,8 @@ block content
       - for (var i=0; i<params.files.length; ++i)
         tr
          td.lightbox
-          a(href="http://s3.amazonaws.com/formaggio-small/400x600/" + params.files[i].Key.replace(/ /g, '-'), target="_blank") 
-            img(class='img-polaroid', width='50', src='http://s3.amazonaws.com/formaggio-small/100x100/' + params.files[i].Key.replace(/ /g, '-'))
+          a(href=params.amazon_url + params.files[i].Key.replace(/ /g, '-').replace('scratch/', '/400x600/'), target="_blank") 
+            img(class='img-polaroid', width='50', src=params.amazon_url + params.files[i].Key.replace(/ /g, '-').replace('scratch/', '/100x100/')))
           &nbsp;
          td
           = params.files[i].Key
@@ -43,6 +43,6 @@ block content
          td
           = params.files[i].LastModified
          td 
-           button(class="btn btn-small", type="button", onclick="document.location='/s3/delete/" + params.files[i].Key + "';") Remove
+           button(class="btn btn-small", type="button", onclick="document.location='/s3/delete/" + params.files[i].Key.replace('scratch/', '') + "';") Remove
          td 
-           button(class="btn btn-small", type="button", onclick="document.location='/bitline/resize/" + params.files[i].Key + "';") Resize
+           button(class="btn btn-small", type="button", onclick="document.location='/bitline/resize/" + params.files[i].Key.replace('scratch/', '') + "';") Resize

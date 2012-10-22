@@ -3,8 +3,16 @@ var express   = require('express'),
     jade      = require('jade'),
     path      = require('path'),
     knox      = require('knox'),
+    knoxCopy  = require('knox-copy'),
     http      = require('http'),
     Blitline  = require('blitline');
+
+var amazon_url = 'http://s3.amazonaws.com/' + process.env.AWS_S3_BUCKET;
+var knox_params = {
+    key: process.env.AWS_ACCESS_KEY_ID.toString(),
+    secret: process.env.AWS_SECRET_ACCESS_KEY.toString(),
+    bucket: process.env.AWS_S3_BUCKET.toString()
+  }
 
 // ---------------------------------------------------
 // Define the express application.
@@ -68,12 +76,12 @@ var resizer = function( filename, width, height ) {
 
   var blitline = new Blitline();
 
-  var url = 'http://s3.amazonaws.com/formaggio-dev/' + filename;
+  var url = amazon_url + '/scratch/' + filename;
   var folder = width.toString() + 'x' + height.toString();
 
   var job = blitline.addJob(process.env.BLITLINE_API_KEY, url);
   job.addFunction('resize_to_fit', { width: width, height: height}, 'my_blurred_cropped_image')
-    .addSave('my_image', 'formaggio-small', folder + '/' + filename.replace(/ /g, "-"));
+    .addSave('my_image', process.env.AWS_S3_BUCKET, folder + '/' + filename.replace(/ /g, "-"));
 
   blitline.postJobs(function(response) {
     // Should have response, but it not really needed for poc.
@@ -84,30 +92,29 @@ var resizer = function( filename, width, height ) {
 
 app.get('/bitline/resize/:name', function(req, res) {
 
-  // Sanitize the filename.
-  var filename = (req.params.name).replace(/ /g, '-');
+  if (process.env.BLITLINE_API_KEY) {
+    // Sanitize the filename.
+    var filename = (req.params.name).replace(/ /g, '-');
 
-  // TODO Make certain the image is in the tmp folder.
+    // Ok call the resizer.
+    resizer( filename, 100, 100);
+    resizer( filename, 400, 600);
 
-  // Ok call the resizer.
-  resizer(filename, 100, 100);
-  resizer(filename, 400, 600 );
+  } else {
+    console.log('No BLITLINE_API_KEY key defined.')
+  }
 
   res.redirect('/');
 });
 
 app.post('/', function(req, res) {
 
-  var client = knox.createClient({
-      key: process.env.AWS_ACCESS_KEY_ID,
-      secret: process.env.AWS_SECRET_ACCESS_KEY,
-      bucket: 'formaggio-dev'
-  });
+  var client = knox.createClient(knox_params);
 
   var file = req.files.file;
   var filename = (file.name).replace(/ /g, '-');
 
-  client.putFile(file.path, filename, {'Content-Type': file.type, 'x-amz-acl': 'public-read'}, 
+  client.putFile(file.path, 'scratch/' + filename, {'Content-Type': file.type, 'x-amz-acl': 'public-read'}, 
     function(err, result) {
       if (err) {
         return; 
@@ -116,8 +123,10 @@ app.post('/', function(req, res) {
           console.log('Uploaded to Amazon S3!');
 
           // call the resizer function for to different sizes.
-          resizer( filename, 100, 100 );
-          resizer( filename, 400, 600 );
+          if (process.env.BLITLINE_API_KEY) {
+            resizer( filename, 100, 100 );
+            resizer( filename, 400, 600 );
+          }
 
           fs.unlink(file.path, function (err) {
             if (err) throw err;
@@ -136,32 +145,42 @@ app.post('/', function(req, res) {
 
 app.get('/s3/delete/:name', function(req, res) {
 
-  var client = knox.createClient({
-      key: process.env.AWS_ACCESS_KEY_ID,
-      secret: process.env.AWS_SECRET_ACCESS_KEY,
-      bucket: 'formaggio-dev'
-  });
+  var client = knox.createClient(knox_params);
 
-  client.del(encodeURIComponent(req.params.name))
+  client.del(encodeURIComponent( 'scratch/' + req.params.name))
     .on('response', function(result){
       console.log('Delete Code', result.statusCode);
-      res.redirect('/'); 
     }).end();
 
+  client.del(encodeURIComponent( '400x600/' + req.params.name))
+    .on('response', function(result){
+      console.log('Delete Code', result.statusCode); 
+    }).end();
+
+  client.del(encodeURIComponent( '100x100/' + req.params.name))
+    .on('response', function(result){
+      console.log('Delete Code', result.statusCode);
+    }).end();
+
+  // Ok send the user back to the list page. The resize API
+  // calls might not be done, but not an issue with a refresh.
+  res.redirect('/');
 });
 
 app.get('/', function(req, res) {
 
-  var knoxCopy = require('knox-copy');
- 
-  var client = knoxCopy.createClient({
-      key: process.env.AWS_ACCESS_KEY_ID.toString(),
-      secret: process.env.AWS_SECRET_ACCESS_KEY.toString(),
-      bucket: process.evn.AWS_S3_BUCKET
-  });
+  var client = knoxCopy.createClient(knox_params);
 
-  client.listPageOfKeys({ prefix: ''}, function(err, page) {
-    res.render('s3list', { params: { title: 'List of S3 Resources', showform: true, files: page.Contents }});
+  client.listPageOfKeys({ prefix: 'scratch'}, function(err, page) {
+    // Call the template with the page data.
+    res.render('s3list', { 
+      params: { 
+        amazon_url: amazon_url, 
+        title: 'List of S3 Resources', 
+        showform: true, 
+        files: page.Contents 
+      }
+    });
   });
 
 });
