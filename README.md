@@ -5,10 +5,28 @@ https://devcenter.heroku.com/articles/dynos#ephemeral-filesystem
 
 Requirements
 
-# AWS account and bucket.
-# Heroku account.
+## Required
 
-Description
+# AWS Account and defined bucket.
+# Heroku Account
+# Node installed locally.
+
+## Setup
+To test this application you need to define the following variables in either your 
+local node workspace (.bash_profile) or as heroku configuration variables. I usually
+create a .settings file in my local workspace and add .setting to my repos .gitignore.
+
+  export AWS_ACCESS_KEY_ID=XXXXX
+  export AWS_ACCESS_ACCESS_KEY=XXXX
+  export AWS_S3_BUCKET=XXXXXXXX
+  export BLITLINE_API_KEY=XXXXX
+
+  heroku config:add AWS_ACCESS_KEY_ID=XXXXX
+  heroku config:add AWS_ACCESS_ACCESS_KEY=XXXX
+  heroku config:add AWS_S3_BUCKET=XXXXXXXX
+  heroku config:add BLITLINE_API_KEY=XXXXX
+
+## Description
 This demo provides a simple file upload, list and display of images. The working demo uses S3. 
 The list of files shows the ephimeral file path, and the final S3 file path. Files are limited
 to 500k and will only remain in the S3 budget for 2 hours. 

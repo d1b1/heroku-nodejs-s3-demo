@@ -157,7 +157,7 @@ app.get('/', function(req, res) {
   var client = knoxCopy.createClient({
       key: process.env.AWS_ACCESS_KEY_ID.toString(),
       secret: process.env.AWS_SECRET_ACCESS_KEY.toString(),
-      bucket: 'formaggio-dev'
+      bucket: process.evn.AWS_S3_BUCKET
   });
 
   client.listPageOfKeys({ prefix: ''}, function(err, page) {
