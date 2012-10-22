@@ -161,7 +161,7 @@ app.get('/', function(req, res) {
   });
 
   client.listPageOfKeys({ prefix: ''}, function(err, page) {
-    res.render('s3list', { params: { title: 'S3 Files', showform: true, files: page.Contents }});
+    res.render('s3list', { params: { title: 'List of S3 Resources', showform: true, files: page.Contents }});
   });
 
 });
