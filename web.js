@@ -176,10 +176,8 @@ app.get('/', function(req, res) {
       console.log('Error',  err);
       res.render('error', {         
         params: { 
-          amazon_url: amazon_url, 
           title: 'List of S3 Resources', 
-          showform: true, 
-          files: page.Contents 
+          showform: false
         }
       });
     } else {
