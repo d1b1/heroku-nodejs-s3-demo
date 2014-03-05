@@ -19,6 +19,16 @@ block header
     });
 
 block content
+
+  - if (params.paging.next || params.paging.previous)
+    ul.pager
+     - if (params.paging.previous)
+       li
+         a(href="#{params.paging.previous}", class="pull-left") Previous
+     - if (params.paging.next)
+       li
+         a(href="#{params.paging.next}", class="pull-right") Next
+
   table.table.table-striped
     thead
       tr

@@ -36,11 +36,18 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(express.cookieParser());
 
+  app.use(function(req, res, next) {
+    var url = require('url')
+    var queryURL = url.parse(req.url, true)
+    req.urlparams = queryURL.query
+    next()
+  })
+
   app.use(app.router);
 
-  app.use('/images', express.static( '/tmp' ));
-  app.use('/', express.static(__dirname + '/'));
-});
+  app.use('/images', express.static( '/tmp' ))
+  app.use('/', express.static(__dirname + '/'))
+})
 
 // -------------------------------------------------------------
 
@@ -164,40 +171,53 @@ app.get('/s3/delete/:name', function(req, res) {
 
   // Ok send the user back to the list page. The resize API
   // calls might not be done, but not an issue with a refresh.
-  res.redirect('/');
-});
+  res.redirect('/')
+})
 
 app.get('/', function(req, res) {
 
   var client = knoxCopy.createClient(knox_params);
 
-  client.listPageOfKeys({ prefix: 'scratch'}, function(err, page) {
+  var marker = req.urlparams.marker || '';
+
+  client.listPageOfKeys({ prefix: 'scratch', marker: marker, maxKeys: 5 }, function(err, page) {
     if (err) {
-      console.log('Error',  err);
       res.render('error', {         
         params: { 
           title: 'List of S3 Resources', 
           showform: false
         }
-      });
+      })
     } else {
       // Call the template with the page data.
+
+
+      console.log('files', page.Contents.files.length)
+
       res.render('s3list', { 
         params: { 
           amazon_url: amazon_url, 
-          title: 'List of S3 Resources', 
           showform: true, 
-          files: page.Contents 
+          files: page.Contents,
+          paging: {
+            next: null,
+            previous: null
+          }
         }
-      });
-      }
-  });
+      }, function(err, html) {
+        if (err) console.log(err)
+        if (err) return res.send('Error in Page')
 
-});
+        res.send(200, html)
+      })
+    }
+  })
+
+})
 
 // ------ Start the App ----------------------------------------
 
 var port = process.env.PORT || 4000;
 app.listen(port, function() { 
-  console.log('StartUp: nodeloader for Heroku ' + port ); 
-});
+  console.log('StartUp: S3-Heroku Demo on ' + port )
+})
